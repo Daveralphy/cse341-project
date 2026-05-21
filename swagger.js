@@ -5,7 +5,7 @@ const doc = {
     title: 'Online Store API',
     description: 'CSE 341 Project 2 Part 1 - Products and Orders API with validation and error handling.',
   },
-  host: 'localhost:8080',
+  host: 'cse341-project-f3se.onrender.com',
   schemes: ['http', 'https'],
 };
 
