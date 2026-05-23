@@ -12,6 +12,16 @@ const productValidationRules = () => {
   ];
 };
 
+const orderValidationRules = () => {
+  return [
+    body('userEmail').isEmail().withMessage('A valid user email address is required.'),
+    body('orderDate').isDate().withMessage('Order date must be a valid YYYY-MM-DD date.'),
+    body('totalAmount').isFloat({ min: 0.01 }).withMessage('Total amount must be a positive number.'),
+    body('shippingAddress').trim().notEmpty().withMessage('Shipping address is required.'),
+    body('status').trim().notEmpty().withMessage('Order status is required.')
+  ];
+};
+
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -26,5 +36,6 @@ const validate = (req, res, next) => {
 
 module.exports = {
   productValidationRules,
+  orderValidationRules,
   validate
 };
