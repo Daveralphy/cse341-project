@@ -69,49 +69,13 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-// 7. Base Authentication Endpoint Handlers
-app.get('/login', passport.authenticate('github', { scope: ['user:email'] }));
-
-app.get(
-  '/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/api-docs' }),
-  (req, res) => {
-    // Session is established successfully. Redirect user to passport dashboard status route.
-    res.redirect('/auth/status');
-  }
-);
-
-app.get('/auth/status', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.status(200).json({
-      authenticated: true,
-      user: {
-        username: req.user.username,
-        displayName: req.user.displayName,
-        id: req.user.id,
-      },
-    });
-  } else {
-    res.status(200).json({ authenticated: false, message: 'No active session found.' });
-  }
-});
-
-app.get('/logout', (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.status(200).json({ authenticated: false, message: 'Successfully logged out.' });
-  });
-});
-
-// 8. Primary Application Routing System
+// 7. Primary Application Routing System
 app.use('/', routes);
 
-// 9. Centralized Global Error Handling Middleware (Must sit after all active routes)
+// 8. Centralized Global Error Handling Middleware (Must sit after all active routes)
 app.use(handleErrors);
 
-// 10. Connect to Cloud MongoDB Cluster before starting up the Express Server
+// 9. Connect to Cloud MongoDB Cluster before starting up the Express Server
 mongodb.initDb((err) => {
   if (err) {
     console.log('Database connection failed:', err);
