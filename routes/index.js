@@ -1,13 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-// Fallback home route message
+// Dynamic home route message showing session login status
 router.get('/', (req, res) => {
-  res.send('Welcome to the Online Store API! Access documentation via /api-docs');
+  if (req.isAuthenticated()) {
+    res.send(`Welcome to the Online Store API! Status: Logged In as ${req.user.username}. Access documentation via /api-docs`);
+  } else {
+    res.send('Welcome to the Online Store API! Status: Logged Out. Access documentation via /api-docs or log in via /login');
+  }
 });
 
 // Primary collection routing maps
 router.use('/products', require('./products'));
-router.use('/orders', require('./orders')); // Added second required collection
+router.use('/orders', require('./orders'));
 
 module.exports = router;
